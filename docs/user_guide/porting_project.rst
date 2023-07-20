@@ -81,11 +81,11 @@ components of it. The user should look at it as a suggestion only.
    you can find templates for the *system_top.v*, *Makefile*, etc. to help you
    when creating a new project.
 
-Example with a Xilinx board
+Example with an AMD Xilinx board
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In this section, we are presenting all the necessary steps to create a base
-design for the Xilinx ZCU102 development board.
+design for the AMD ZCU102 development board.
 
 First, you need to create a new directory in *~/projects/common* with the name
 of the carrier.
@@ -158,12 +158,12 @@ process:
 Project files
 -------------------------------------------------------------------------------
 
-Project files for Xilinx boards
+Project files for AMD Xilinx boards
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To follow the project framework as much as possible, the easiest way is to copy
 all the projects files from an already existing project and modifying those
-files to support the new carrier. A project for a Xilinx FPGA board should
+files to support the new carrier. A project for an AMD FPGA board should
 contain the following files:
 
 - **system_project.tcl** - This script is creating the actual Vivado project
@@ -270,7 +270,7 @@ For example:
    (:git-hdl:`projects/common <projects/common>`/<carrier>/<carrier>_<fmc_port>.txt).
 
 The generated file will appear in the current directory as **fmc_constr.xdc**
-(Xilinx board) or **fmc_constr.tcl** (Intel board). If ran from an open Vivado
+(AMD board) or **fmc_constr.tcl** (Intel board). If ran from an open Vivado
 project, the generated file will be automatically added to the project.
 
 .. _creating_fmc:
