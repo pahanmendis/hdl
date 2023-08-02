@@ -32,6 +32,7 @@ set mipi_csi2_rx_subsyst_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:mipi_cs
    CONFIG.DATA_LANE1_IO_LOC_NAME {IO_L15P_T2L_N4_AD11P_66} \
    CONFIG.DPY_LINE_RATE {1500} \
    CONFIG.C_EN_CSI_V2_0 {false} \
+   CONFIG.CMN_NUM_PIXELS {2} \
    CONFIG.CMN_INC_VFB {true} \
    CONFIG.DPY_EN_REG_IF {true} \
    CONFIG.CSI_EMB_NON_IMG {false} \
@@ -40,49 +41,38 @@ set mipi_csi2_rx_subsyst_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:mipi_cs
    CONFIG.SupportLevel {1} \
  ] $mipi_csi2_rx_subsyst_0
 
-# set axis_switch_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_switch:1.1 axis_switch_0 ]
-# set_property -dict [list \
-#   CONFIG.HAS_TLAST {1} \
-#   CONFIG.NUM_MI {2} \
-#   CONFIG.NUM_SI {1} \
-#   CONFIG.TDATA_NUM_BYTES {2} \
-#   CONFIG.TDEST_WIDTH {10} \
-#   CONFIG.TUSER_WIDTH {2} \
-# ] [get_bd_cells axis_switch_0]
-
-set axis_interconnect_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_interconnect:2.1 axis_interconnect_0 ]
-set_property -dict [list \
-  CONFIG.ENABLE_ADVANCED_OPTIONS {0} \
-  CONFIG.HAS_ACLKEN {0} \
-  CONFIG.M00_FIFO_MODE {0} \
-  CONFIG.NUM_MI {4} \
-] [get_bd_cells axis_interconnect_0]
+ set axis_switch_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_switch:1.1 axis_switch_0 ]
+ set_property -dict [list \
+   CONFIG.HAS_TLAST {1} \
+   CONFIG.NUM_MI {4} \
+   CONFIG.NUM_SI {1} \
+   CONFIG.TDATA_NUM_BYTES {4} \
+   CONFIG.TDEST_WIDTH {4} \
+   CONFIG.TUSER_WIDTH {2} \
+ ] [get_bd_cells axis_switch_0]
 
 set v_frmbuf_wr_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:v_frmbuf_wr:2.4 v_frmbuf_wr_0 ]
 set_property -dict [list \
   CONFIG.HAS_UYVY8 {1} \
-  CONFIG.AXIMM_DATA_WIDTH {32} \
   CONFIG.HAS_YUYV8 {1} \
   CONFIG.HAS_Y_UV8 {1} \
-  CONFIG.SAMPLES_PER_CLOCK {1} \
+  CONFIG.SAMPLES_PER_CLOCK {2} \
 ] [get_bd_cells v_frmbuf_wr_0]
 
 set v_frmbuf_wr_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:v_frmbuf_wr:2.4 v_frmbuf_wr_1 ]
 set_property -dict [list \
  CONFIG.HAS_UYVY8 {1} \
-   CONFIG.AXIMM_DATA_WIDTH {32} \
  CONFIG.HAS_YUYV8 {1} \
  CONFIG.HAS_Y_UV8 {1} \
- CONFIG.SAMPLES_PER_CLOCK {1} \
+ CONFIG.SAMPLES_PER_CLOCK {2} \
 ] [get_bd_cells v_frmbuf_wr_1]
 
 set v_frmbuf_wr_2 [ create_bd_cell -type ip -vlnv xilinx.com:ip:v_frmbuf_wr:2.4 v_frmbuf_wr_2 ]
 set_property -dict [list \
   CONFIG.HAS_UYVY8 {1} \
-  CONFIG.AXIMM_DATA_WIDTH {32} \
   CONFIG.HAS_YUYV8 {1} \
   CONFIG.HAS_Y_UV8 {1} \
-  CONFIG.SAMPLES_PER_CLOCK {1} \
+  CONFIG.SAMPLES_PER_CLOCK {2} \
 ] [get_bd_cells v_frmbuf_wr_2]
 
 set v_frmbuf_wr_3 [ create_bd_cell -type ip -vlnv xilinx.com:ip:v_frmbuf_wr:2.4 v_frmbuf_wr_3 ]
@@ -91,36 +81,36 @@ set_property -dict [list \
   CONFIG.AXIMM_DATA_WIDTH {32} \
   CONFIG.HAS_YUYV8 {1} \
   CONFIG.HAS_Y_UV8 {1} \
-  CONFIG.SAMPLES_PER_CLOCK {1} \
+  CONFIG.SAMPLES_PER_CLOCK {2} \
 ] [get_bd_cells v_frmbuf_wr_3]
 
 connect_bd_intf_net -intf_net mipi_phy_if_0_1 [get_bd_intf_ports mipi_phy_if_0] [get_bd_intf_pins mipi_csi2_rx_subsyst_0/mipi_phy_if]
 
 ad_ip_instance axis_subset_converter axis_subset_cnv
-ad_ip_parameter axis_subset_cnv CONFIG.M_TDATA_NUM_BYTES {3}
-ad_ip_parameter axis_subset_cnv CONFIG.S_TDATA_NUM_BYTES {2}
-ad_ip_parameter axis_subset_cnv CONFIG.TDATA_REMAP {8'b00000000,tdata[15:0]}
+ad_ip_parameter axis_subset_cnv CONFIG.M_TDATA_NUM_BYTES {6}
+ad_ip_parameter axis_subset_cnv CONFIG.S_TDATA_NUM_BYTES {4}
+ad_ip_parameter axis_subset_cnv CONFIG.TDATA_REMAP {16'b0000000000000000,tdata[31:0]}
 ad_ip_parameter axis_subset_cnv CONFIG.TKEEP_REMAP {1'b0}
 ad_ip_parameter axis_subset_cnv CONFIG.TSTRB_REMAP {1'b0}
 
 ad_ip_instance axis_subset_converter axis_subset_cnv1
-ad_ip_parameter axis_subset_cnv1 CONFIG.M_TDATA_NUM_BYTES {3}
-ad_ip_parameter axis_subset_cnv1 CONFIG.S_TDATA_NUM_BYTES {2}
-ad_ip_parameter axis_subset_cnv1 CONFIG.TDATA_REMAP {8'b00000000,tdata[15:0]}
+ad_ip_parameter axis_subset_cnv1 CONFIG.M_TDATA_NUM_BYTES {6}
+ad_ip_parameter axis_subset_cnv1 CONFIG.S_TDATA_NUM_BYTES {4}
+ad_ip_parameter axis_subset_cnv1 CONFIG.TDATA_REMAP {16'b0000000000000000,tdata[31:0]}
 ad_ip_parameter axis_subset_cnv1 CONFIG.TKEEP_REMAP {1'b0}
 ad_ip_parameter axis_subset_cnv1 CONFIG.TSTRB_REMAP {1'b0}
 
 ad_ip_instance axis_subset_converter axis_subset_cnv2
-ad_ip_parameter axis_subset_cnv2 CONFIG.M_TDATA_NUM_BYTES {3}
-ad_ip_parameter axis_subset_cnv2 CONFIG.S_TDATA_NUM_BYTES {2}
-ad_ip_parameter axis_subset_cnv2 CONFIG.TDATA_REMAP {8'b00000000,tdata[15:0]}
+ad_ip_parameter axis_subset_cnv2 CONFIG.M_TDATA_NUM_BYTES {6}
+ad_ip_parameter axis_subset_cnv2 CONFIG.S_TDATA_NUM_BYTES {4}
+ad_ip_parameter axis_subset_cnv2 CONFIG.TDATA_REMAP {16'b0000000000000000,tdata[31:0]}
 ad_ip_parameter axis_subset_cnv2 CONFIG.TKEEP_REMAP {1'b0}
 ad_ip_parameter axis_subset_cnv2 CONFIG.TSTRB_REMAP {1'b0}
 
 ad_ip_instance axis_subset_converter axis_subset_cnv3
-ad_ip_parameter axis_subset_cnv3 CONFIG.M_TDATA_NUM_BYTES {3}
-ad_ip_parameter axis_subset_cnv3 CONFIG.S_TDATA_NUM_BYTES {2}
-ad_ip_parameter axis_subset_cnv3 CONFIG.TDATA_REMAP {8'b00000000,tdata[15:0]}
+ad_ip_parameter axis_subset_cnv3 CONFIG.M_TDATA_NUM_BYTES {6}
+ad_ip_parameter axis_subset_cnv3 CONFIG.S_TDATA_NUM_BYTES {4}
+ad_ip_parameter axis_subset_cnv3 CONFIG.TDATA_REMAP {16'b0000000000000000,tdata[31:0]}
 ad_ip_parameter axis_subset_cnv3 CONFIG.TKEEP_REMAP {1'b0}
 ad_ip_parameter axis_subset_cnv3 CONFIG.TSTRB_REMAP {1'b0}
 
@@ -150,39 +140,14 @@ ad_connect mipi_csi2_rx_subsyst_0/lite_aclk $sys_cpu_clk
 ad_connect mipi_csi2_rx_subsyst_0/lite_aresetn $sys_cpu_resetn
 ad_connect mipi_csi2_rx_subsyst_0/dphy_clk_200M dphy_clk_generator/clk_out1
 
-#ad_connect mipi_csi2_rx_subsyst_0/video_out axis_subset_cnv/S_AXIS
-#ad_connect mipi_csi2_rx_subsyst_0/video_out axis_subset_cnv1/S_AXIS
-# ad_connect mipi_csi2_rx_subsyst_0/video_out axis_switch_0/S00_AXIS
-ad_connect mipi_csi2_rx_subsyst_0/video_out axis_interconnect_0/S00_AXIS
-# ad_connect axis_switch_0/M00_AXIS axis_subset_cnv/S_AXIS
-ad_connect axis_interconnect_0/M00_AXIS axis_subset_cnv/S_AXIS
-ad_connect axis_interconnect_0/M01_AXIS axis_subset_cnv1/S_AXIS
-ad_connect axis_interconnect_0/M02_AXIS axis_subset_cnv2/S_AXIS
-ad_connect axis_interconnect_0/M03_AXIS axis_subset_cnv3/S_AXIS
-# ad_connect axis_switch_0/M01_AXIS axis_subset_cnv1/S_AXIS
-# ad_connect axis_switch_0/M02_AXIS axis_subset_cnv2/S_AXIS
-# ad_connect axis_switch_0/M03_AXIS axis_subset_cnv3/S_AXIS
-#ad_connect axis_switch_0/M00_AXIS v_frmbuf_wr_0/s_axis_video
-#ad_connect axis_switch_0/M01_AXIS v_frmbuf_wr_1/s_axis_video
-#ad_connect axis_switch_0/M02_AXIS v_frmbuf_wr_2/s_axis_video
-#ad_connect axis_switch_0/M03_AXIS v_frmbuf_wr_3/s_axis_video
+ad_connect mipi_csi2_rx_subsyst_0/video_out axis_switch_0/S00_AXIS
+ad_connect axis_switch_0/M00_AXIS axis_subset_cnv/S_AXIS
+ad_connect axis_switch_0/M01_AXIS axis_subset_cnv1/S_AXIS
+ad_connect axis_switch_0/M02_AXIS axis_subset_cnv2/S_AXIS
+ad_connect axis_switch_0/M03_AXIS axis_subset_cnv3/S_AXIS
 
-#ad_connect axis_switch_0/M03_AXIS v_frmbuf_wr_3/s_axis_video
-
-# ad_connect axis_switch_0/aclk $sys_cpu_clk
-# ad_connect axis_switch_0/aresetn ap_rstn_frmbuf
-ad_connect axis_interconnect_0/ACLK $sys_cpu_clk
-ad_connect axis_interconnect_0/ARESETN ap_rstn_frmbuf
-ad_connect axis_interconnect_0/S00_AXIS_ACLK $sys_cpu_clk
-ad_connect axis_interconnect_0/S00_AXIS_ARESETN ap_rstn_frmbuf
-ad_connect axis_interconnect_0/M00_AXIS_ACLK $sys_cpu_clk
-ad_connect axis_interconnect_0/M00_AXIS_ARESETN ap_rstn_frmbuf
-ad_connect axis_interconnect_0/M01_AXIS_ACLK $sys_cpu_clk
-ad_connect axis_interconnect_0/M01_AXIS_ARESETN ap_rstn_frmbuf1
-ad_connect axis_interconnect_0/M02_AXIS_ACLK $sys_cpu_clk
-ad_connect axis_interconnect_0/M02_AXIS_ARESETN ap_rstn_frmbuf2
-ad_connect axis_interconnect_0/M03_AXIS_ACLK $sys_cpu_clk
-ad_connect axis_interconnect_0/M03_AXIS_ARESETN ap_rstn_frmbuf3
+ad_connect axis_switch_0/aclk $sys_cpu_clk
+ad_connect axis_switch_0/aresetn csirxss_rstn
 ad_connect axis_subset_cnv/aclk $sys_cpu_clk
 ad_connect axis_subset_cnv/aresetn ap_rstn_frmbuf
 ad_connect axis_subset_cnv1/aclk $sys_cpu_clk
@@ -195,10 +160,6 @@ ad_connect axis_subset_cnv/M_AXIS v_frmbuf_wr_0/s_axis_video
 ad_connect axis_subset_cnv1/M_AXIS v_frmbuf_wr_1/s_axis_video
 ad_connect axis_subset_cnv2/M_AXIS v_frmbuf_wr_2/s_axis_video
 ad_connect axis_subset_cnv3/M_AXIS v_frmbuf_wr_3/s_axis_video
-#ad_connect switch_handler_0/video_out v_frmbuf_wr_0/s_axis_video
-#ad_connect switch_handler_1/video_out v_frmbuf_wr_1/s_axis_video
-#ad_connect switch_handler_2/video_out v_frmbuf_wr_2/s_axis_video
-#ad_connect switch_handler_3/video_out v_frmbuf_wr_3/s_axis_video
 ad_connect v_frmbuf_wr_0/ap_clk $sys_cpu_clk
 ad_connect v_frmbuf_wr_0/ap_rst_n ap_rstn_frmbuf
 ad_connect v_frmbuf_wr_1/ap_clk $sys_cpu_clk

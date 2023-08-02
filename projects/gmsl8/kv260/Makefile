@@ -13,6 +13,7 @@ M_DEPS += ../../common/kv260/kv260_system_bd.tcl
 M_DEPS += ../../../library/common/ad_iobuf.v
 
 LIB_DEPS += axi_sysid
+#LIB_DEPS += stream_handler
 LIB_DEPS += sysid_rom
 
 include ../../scripts/project-xilinx.mk
