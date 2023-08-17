@@ -2,6 +2,7 @@ sphinx
 lxml
 furo
 wavedrom
+sphinx-design
 sphinxcontrib-wavedrom
 sphinxcontrib-mermaid
 sphinxcontrib-svg2pdfconverter

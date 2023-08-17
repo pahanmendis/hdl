@@ -18,7 +18,7 @@ sys.path.append(os.path.abspath("./extensions"))
 extensions = [
 	"sphinx.ext.todo",
 	"sphinx.ext.viewcode",
-	"sphinxcontrib.mermaid",
+    "sphinx_design",
 	"sphinxcontrib.wavedrom",
 	"symbolator_sphinx",
 	"adi_links",
@@ -50,3 +50,4 @@ html_static_path = ['sources']
 source_suffix = '.rst'
 html_css_files = ["custom.css"]
 html_favicon = "sources/icon.svg"
+pygments_style = 'sphinx'
