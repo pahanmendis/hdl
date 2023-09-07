@@ -213,44 +213,37 @@ create_bd_port -dir I ndac_spi_sdi_i
 ad_ip_instance axi_quad_spi axi_fpga_bus0
 ad_ip_parameter axi_fpga_bus0 CONFIG.C_USE_STARTUP 0
 ad_ip_parameter axi_fpga_bus0 CONFIG.C_NUM_SS_BITS 2
-ad_ip_parameter axi_fpga_bus0 CONFIG.C_SCK_RATIO 16
-ad_ip_parameter axi_fpga_bus0 CONFIG.Multiples16 4
+ad_ip_parameter axi_fpga_bus0 CONFIG.C_SCK_RATIO 4
 
 ad_ip_instance axi_quad_spi axi_fpga_bus1
 ad_ip_parameter axi_fpga_bus1 CONFIG.C_USE_STARTUP 0
 ad_ip_parameter axi_fpga_bus1 CONFIG.C_NUM_SS_BITS 4
 ad_ip_parameter axi_fpga_bus1 CONFIG.C_SCK_RATIO 8
-ad_ip_parameter axi_fpga_bus1 CONFIG.Multiples16 1
 
 ad_ip_instance axi_quad_spi axi_spim
 ad_ip_parameter axi_spim CONFIG.C_USE_STARTUP 0
 ad_ip_parameter axi_spim CONFIG.C_NUM_SS_BITS 2
 ad_ip_parameter axi_spim CONFIG.C_SCK_RATIO 8
-ad_ip_parameter axi_spim CONFIG.Multiples16 1
 
 ad_ip_instance axi_quad_spi axi_spi_adl5960_1
 ad_ip_parameter axi_spi_adl5960_1 CONFIG.C_USE_STARTUP 0
 ad_ip_parameter axi_spi_adl5960_1 CONFIG.C_NUM_SS_BITS 8
 ad_ip_parameter axi_spi_adl5960_1 CONFIG.C_SCK_RATIO 16
-ad_ip_parameter axi_spi_adl5960_1 CONFIG.Multiples16 1
 
 ad_ip_instance axi_quad_spi axi_spi_fpga_busf
 ad_ip_parameter axi_spi_fpga_busf CONFIG.C_USE_STARTUP 0
 ad_ip_parameter axi_spi_fpga_busf CONFIG.C_NUM_SS_BITS 1
-ad_ip_parameter axi_spi_fpga_busf CONFIG.C_SCK_RATIO 16
-ad_ip_parameter axi_spi_fpga_busf CONFIG.Multiples16 4
+ad_ip_parameter axi_spi_fpga_busf CONFIG.C_SCK_RATIO 4
 
 ad_ip_instance axi_quad_spi axi_spi_fmcdac
 ad_ip_parameter axi_spi_fmcdac CONFIG.C_USE_STARTUP 0
 ad_ip_parameter axi_spi_fmcdac CONFIG.C_NUM_SS_BITS 1
 ad_ip_parameter axi_spi_fmcdac CONFIG.C_SCK_RATIO 4
-ad_ip_parameter axi_spi_fmcdac CONFIG.Multiples16 1
 
 ad_ip_instance axi_quad_spi axi_spi_ndac
 ad_ip_parameter axi_spi_ndac CONFIG.C_USE_STARTUP 0
 ad_ip_parameter axi_spi_ndac CONFIG.C_NUM_SS_BITS 1
-ad_ip_parameter axi_spi_ndac CONFIG.C_SCK_RATIO 16
-ad_ip_parameter axi_spi_ndac CONFIG.Multiples16 4
+ad_ip_parameter axi_spi_ndac CONFIG.C_SCK_RATIO 4
 
 # spi connections
 
