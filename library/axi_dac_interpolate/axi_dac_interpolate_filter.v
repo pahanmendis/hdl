@@ -49,7 +49,6 @@ module axi_dac_interpolate_filter #(
   output  reg [15:0]    dac_int_data,
   output                dma_ready,
   output                dac_valid_out,
-  input                 sync_stop_channels,
   output                underflow,
 
   input       [ 2:0]    filter_mask,
@@ -58,6 +57,10 @@ module axi_dac_interpolate_filter #(
   input                 dac_correction_enable,
   input                 dma_transfer_suspend,
   input                 start_sync_channels,
+  input                 sync_stop_channels,
+  input                 flush_dma_in,
+  input                 raw_transfer_en,
+  input       [15:0]    dac_raw_ch_data,
   input                 trigger,
   input                 trigger_active,
   input                 en_start_trigger,
@@ -65,6 +68,12 @@ module axi_dac_interpolate_filter #(
   input                 dma_valid,
   input                 dma_valid_adjacent
 );
+
+  // local parameters
+
+  localparam [1:0] IDLE = 0;
+  localparam [1:0] READY_TO_FLUSH = 1;
+  localparam [1:0] FLUSHING = 2;
 
   // internal signals
 
@@ -84,6 +93,10 @@ module axi_dac_interpolate_filter #(
   reg     [15:0]    dma_valid_m = 16'd0;
   reg               stop_transfer = 1'd0;
 
+  reg     [ 1:0]    flush_sm = 2'd0;
+  reg     [ 1:0]    flush_sm_next = 2'd0;
+  reg               raw_dma_n = 2'd0;
+
   wire              dac_valid_corrected;
   wire    [15:0]    dac_data_corrected;
   wire              dac_fir_valid;
@@ -94,6 +107,19 @@ module axi_dac_interpolate_filter #(
 
   wire              dma_valid_ch_sync;
   wire              dma_valid_ch;
+  wire              flush_dma;
+
+  wire     [15:0]   iqcor_data_in;
+  wire              iqcor_valid_in;
+
+  always @(posedge dac_clk) begin
+    raw_dma_n <= raw_transfer_en ?
+                       1'b1 :
+                       flush_dma | raw_dma_n & dma_transfer_suspend;
+  end
+
+  assign iqcor_data_in  = raw_dma_n ? dac_raw_ch_data : dac_data;
+  assign iqcor_valid_in = raw_dma_n ? 1'b1 : dac_valid;
 
   ad_iqcor #(
     .Q_OR_I_N (0),
@@ -101,8 +127,8 @@ module axi_dac_interpolate_filter #(
     .SCALE_ONLY(1)
   ) i_ad_iqcor (
     .clk (dac_clk),
-    .valid (dac_valid),
-    .data_in (dac_data),
+    .valid (iqcor_valid_in),
+    .data_in (iqcor_data_in),
     .data_iq (16'h0),
     .valid_out (dac_valid_corrected),
     .data_out (dac_data_corrected),
@@ -191,7 +217,31 @@ module axi_dac_interpolate_filter #(
                      stop_transfer | (trigger_active & trigger & transfer);
   end
 
-  assign dma_ready = transmit_ready ? dac_int_ready : 1'b0;
+  always @(posedge dac_clk) begin
+    case (flush_sm)
+      IDLE: begin
+        if (dma_ready) begin
+          flush_sm_next <= READY_TO_FLUSH;
+        end
+      end
+      READY_TO_FLUSH: begin
+        if (dma_valid & dma_transfer_suspend & flush_dma_in) begin
+          flush_sm_next <= FLUSHING;
+        end else if (~dma_valid & dma_transfer_suspend) begin
+          flush_sm_next <= IDLE;
+        end
+      end
+      FLUSHING: begin
+        if (dma_valid == 1'b0) begin
+          flush_sm_next <= IDLE;
+        end
+      end
+    endcase
+    flush_sm <= flush_sm_next;
+  end
+
+  assign flush_dma = flush_sm == FLUSHING ? 1'b1 : 1'b0;
+  assign dma_ready = transmit_ready ? dac_int_ready : flush_dma;
   assign underflow = dac_enable & dma_ready & ~dma_valid;
 
   always @(posedge dac_clk) begin
