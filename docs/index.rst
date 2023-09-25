@@ -15,6 +15,12 @@ HDL Reference Designs
 
    library/spi_engine/index
    library/axi_dmac/index
+.. toctree::
+   :caption: Projects
+   :hidden:
+
+   projects/index
+   projects/template/index
 
 .. role:: red
 .. role:: green
