@@ -13,9 +13,6 @@ all: lib
 
 
 clean:
-	$(MAKE) -C i3c_controller/axi_i3c_controller clean
-	$(MAKE) -C i3c_controller/i3c_controller_core clean
-	$(MAKE) -C i3c_controller/i3c_controller_host_interface clean
 	$(MAKE) -C ad463x_data_capture clean
 	$(MAKE) -C axi_ad5766 clean
 	$(MAKE) -C axi_ad7606x clean
@@ -75,6 +72,8 @@ clean:
 	$(MAKE) -C intel/common/intel_serdes clean
 	$(MAKE) -C intel/jesd204_phy clean
 	$(MAKE) -C intel/util_clkdiv clean
+	$(MAKE) -C i3c_controller/i3c_controller_core clean
+	$(MAKE) -C i3c_controller/i3c_controller_host_interface clean
 	$(MAKE) -C jesd204/ad_ip_jesd204_tpl_adc clean
 	$(MAKE) -C jesd204/ad_ip_jesd204_tpl_dac clean
 	$(MAKE) -C jesd204/axi_jesd204_common clean
@@ -138,9 +137,6 @@ clean-all:clean
 
 
 lib:
-	$(MAKE) -C i3c_controller/axi_i3c_controller
-	$(MAKE) -C i3c_controller/i3c_controller_core
-	$(MAKE) -C i3c_controller/i3c_controller_host_interface
 	$(MAKE) -C ad463x_data_capture
 	$(MAKE) -C axi_ad5766
 	$(MAKE) -C axi_ad7606x
@@ -200,6 +196,8 @@ lib:
 	$(MAKE) -C intel/common/intel_serdes
 	$(MAKE) -C intel/jesd204_phy
 	$(MAKE) -C intel/util_clkdiv
+	$(MAKE) -C i3c_controller/i3c_controller_core
+	$(MAKE) -C i3c_controller/i3c_controller_host_interface
 	$(MAKE) -C jesd204/ad_ip_jesd204_tpl_adc
 	$(MAKE) -C jesd204/ad_ip_jesd204_tpl_dac
 	$(MAKE) -C jesd204/axi_jesd204_common
