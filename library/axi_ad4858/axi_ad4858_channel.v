@@ -89,6 +89,7 @@ module axi_ad4858_channel #(
   reg                    adc_pn_err;
   reg                    adc_valid_f1;
   reg        [23:0]      adc_data_f1;
+  reg        [31:0]      pattern;
   reg        [31:0]      adc_raw_data;
   reg        [31:0]      read_channel_data;
   reg        [31:0]      expected_package_pattern;
@@ -122,7 +123,7 @@ module axi_ad4858_channel #(
 
   always @(posedge adc_clk) begin
     expected_package_pattern <= expected_package_pattern_s;
-    if (expected_package_pattern == adc_raw_data) begin
+    if (expected_package_pattern == pattern) begin
       adc_pn_err <= 1'b0;
     end else begin
       adc_pn_err <= to_be_checked;
@@ -139,30 +140,35 @@ module axi_ad4858_channel #(
         adc_data_f1 <= {4'd0, adc_ch_data_in[19:0]};
         adc_or <= 1'b0;
         adc_status_header <= 7'd0;
+        pattern <= {12'd0, adc_ch_data_in[19:0]};
       end
       3'h2: begin // packet format 24 - oversampling off
         adc_raw_data <= {12'd0,adc_ch_data_in[23:4]};
         adc_data_f1 <= {4'd0, adc_ch_data_in[23:4]};
         adc_or <= adc_ch_data_in[3];
         adc_status_header <= {adc_ch_data_in[2:0], 4'd0};
+        pattern <= {8'd0, adc_ch_data_in[23:0]};
       end
       3'h3: begin // packet format 24 - oversampling on
         adc_raw_data <= {8'd0,adc_ch_data_in[23:0]};
         adc_data_f1 <= adc_ch_data_in[23:0];
         adc_or <= 3'd0;
         adc_status_header <= 7'd0;
+        pattern <= {8'd0, adc_ch_data_in[23:0]};
       end
       3'h4,3'h6: begin // packet format 32 - oversampling off
         adc_raw_data <= {12'd0, adc_ch_data_in[31:12]};
         adc_data_f1 <= {4'd0, adc_ch_data_in[31:12]};
         adc_or <= adc_ch_data_in[11];
         adc_status_header <= adc_ch_data_in[10:4];
+        pattern <= adc_ch_data_in;
       end
       3'h5,3'h7: begin // packet format 32 - oversampling on
         adc_raw_data <= {8'd0, adc_ch_data_in[31:8]};
         adc_data_f1 <= adc_ch_data_in[31:8];
         adc_or <= adc_ch_data_in[7];
         adc_status_header <= adc_ch_data_in[6:0];
+        pattern <= adc_ch_data_in;
       end
     endcase
   end
