@@ -502,7 +502,10 @@ class directive_parameters(directive_base):
 			else:
 				self.column_entry(row, dot_fix(parameter[key]['description']), 'paragraph', classes=['description'])
 			for tag in ['type', 'default']:
-				self.column_entry(row, parameter[key][tag].title(), 'paragraph')
+				if parameter[key][tag] is not None:
+					self.column_entry(row, parameter[key][tag].title(), 'paragraph')
+				else:
+					self.column_entry(row, "", 'paragraph')
 			crange = []
 			if parameter[key]['choices'] is not None:
 				crange.append(parameter[key]['choices'])
