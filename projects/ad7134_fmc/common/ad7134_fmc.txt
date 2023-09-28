@@ -1,0 +1,120 @@
+# AD7134_FMC
+
+FMC_pin   FMC_port       Schematic_name     System_top_name     IOSTANDARD  Termination
+
+# ad713x SPI configuration interface
+G9        LA03_P          DEC3/SDO           ad713x_spi_sdi      LVCMOS25    #N/A
+H11       LA04_N          DEC2/SDI           ad713x_spi_sdo      LVCMOS25    #N/A
+D8        LA01_P_CC       FORMAT1/SCLK       ad713x_spi_sclk     LVCMOS25    #N/A
+D11       LA05_P          FORMAT0/CSB_1      ad713x_spi_cs[0]    LVCMOS25    #N/A
+D12       LA05_N          FORMAT0/CSB_2      ad713x_spi_cs[1]    LVCMOS25    #N/A
+
+# ad713x data interface
+H4        CLK0_M2C_P      DCLK               ad713x_dclk         LVCMOS25    #N/A
+G7        LA00_N_CC       DOUT0_1            ad713x_din[0]       LVCMOS25    #N/A
+C11       LA06_N          DOUT1_1            ad713x_din[1]       LVCMOS25    #N/A
+H7        LA02_P          DOUT2_1            ad713x_din[2]       LVCMOS25    #N/A
+H8        LA02_N          DOUT3_1            ad713x_din[3]       LVCMOS25    #N/A
+G12       LA08_P          DOUT0_2            ad713x_din[4]       LVCMOS25    #N/A
+G13       LA08_N          DOUT1_2            ad713x_din[5]       LVCMOS25    #N/A
+D14       LA09_P          DOUT2_2            ad713x_din[6]       LVCMOS25    #N/A
+D15       LA09_N          DOUT3_2            ad713x_din[7]       LVCMOS25    #N/A
+
+G6        LA00_P_CC       ODR                ad713x_odr          LVCMOS25    #N/A
+
+# ad713x GPIO lines
+G18       LA16_P          RESETB_1           ad713x_resetn[0]    LVCMOS25    #N/A
+G19       LA16_N          RESETB_2           ad713x_resetn[1]    LVCMOS25    #N/A
+H13       LA07_P          PDNB_1             ad713x_pdn[0]       LVCMOS25    #N/A
+H14       LA07_N          PDNB_2             ad713x_pdn[1]       LVCMOS25    #N/A
+H10       LA04_P          MODE_1             ad713x_mode[0]      LVCMOS25    #N/A
+G10       LA03_N          MODE_2             ad713x_mode[1]      LVCMOS25    #N/A
+C14       LA10_P          DCLKRATE0/GPIO0    ad713x_gpio[0]      LVCMOS25    #N/A
+C15       LA10_N          DCLKRATE1/GPIO1    ad713x_gpio[1]      LVCMOS25    #N/A
+H16       LA11_P          DCLKRATE2/GPIO2    ad713x_gpio[2]      LVCMOS25    #N/A
+G15       LA12_P          FILTER0/GPIO4      ad713x_gpio[4]      LVCMOS25    #N/A
+G16       LA12_N          FILTER1/GPIO5      ad713x_gpio[5]      LVCMOS25    #N/A
+D17       LA13_P          FRAME0/GPIO6       ad713x_gpio[6]      LVCMOS25    #N/A
+D18       LA13_N          FRAME1/GPIO7       ad713x_gpio[7]      LVCMOS25    #N/A
+C18       LA14_P          DEC0/DCLKIO_1      ad713x_dclkio[0]    LVCMOS25    #N/A
+H19       LA15_P          DEC0/DCLKIO_2      ad713x_dclkio[1]    LVCMOS25    #N/A
+C10       LA06_P          PINB/SPI           ad713x_pinbspi      LVCMOS25    #N/A
+C19       LA14_N          DEC1/DCLKMODE      ad713x_dclkmode     LVCMOS25    #N/A
+
+# ad713x reference clock (not used by default)
+D9        LA01_N_CC       SDPCLK             ad713x_sdpclk       LVCMOS25    #N/A
+
+G37       LA33_N          ODR                #N/A                #N/A        #N/A
+H5        CLK0_M2C_N      DCLK               #N/A                #N/A        #N/A
+H17       LA11_N          PWRMODE/GPIO3      #N/A                #N/A        #N/A
+ 
+C30       SCL             SCL                #N/A                #N/A        #N/A
+C31       SDA             SDA                #N/A                #N/A        #N/A
+
+C34       GA0             GA0                #N/A                #N/A        #N/A
+D35       GA1             GA1                #N/A                #N/A        #N/A
+
+D30       TDI             R37                #N/A                #N/A        #N/A
+D31       TDO             R37                #N/A                #N/A        #N/A
+
+C35       12P0V           12V_VIN            #N/A                #N/A        #N/A
+C37       12P0V           12V_VIN            #N/A                #N/A        #N/A
+D32       3P3VAUX         3P3VAUX            #N/A                #N/A        #N/A
+
+G2        CLK1_M2C_P      
+G3        CLK1_M2C_P                            
+G21       LA20_P
+G22       LA20_N
+G24       LA22_P
+G25       LA22_N
+G27       LA25_P
+G28       LA25_N
+G30       LA29_P
+G31       LA29_N
+G33       LA31_P
+G34       LA31_N
+G36       LA33_P
+G39       VADJ
+
+H1        VREF_A_M2C
+H2        PRSNT_M2C_L
+H20       LA15_N
+H22       LA19_P
+H23       LA19_N
+H25       LA21_P
+H26       LA21_N
+H28       LA24_P
+H29       LA24_N
+H31       LA28_P
+H32       LA28_M
+H34       LA30_P
+H35       LA30_N
+H37       LA32_P
+H38       LA32_N
+H40       VADJ
+
+C2        DP0_C2M_P
+C3        DP0_C2M_N
+C6        DP0_M2C_P
+C7        DP0_C2M_N
+C22       LA18_P_CC
+C23       LA18_N_CC
+C26       LA27_P
+C27       LA27_N
+C39       3P3V
+
+D1        PG_C2M
+D4        GBTCLK0_M2C_P
+D5        GBTCLK0_M2C_N
+D20       LA17_P_CC
+D21       LA17_N_CC
+D23       LA23_P
+D24       LA32_N
+D26       LA26_P
+D27       LA26_N
+D29       TCK
+D33       TMS
+D34       TRST_L
+D36       3P3V
+D38       3P3V
+D40       3P3V
