@@ -35,7 +35,7 @@
 
 `timescale 1ns/100ps
 
-module system_top_lvds (
+module system_top (
   inout       [14:0]      ddr_addr,
   inout       [ 2:0]      ddr_ba,
   inout                   ddr_cas_n,
