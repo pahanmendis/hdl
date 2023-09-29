@@ -153,7 +153,7 @@ module axi_dac_interpolate #(
   wire              underflow_b;
 
   wire              stop_sync_channels;
-  wire              raw_transfer_en;
+  wire    [ 1:0]    raw_transfer_en;
   wire    [15:0]    dac_raw_ch_a_data;
   wire    [15:0]    dac_raw_ch_b_data;
 
@@ -231,7 +231,7 @@ module axi_dac_interpolate #(
     .start_sync_channels (start_sync_channels),
     .sync_stop_channels (stop_sync_channels),
     .flush_dma_in (flush_dma_s),
-    .raw_transfer_en (raw_transfer_en),
+    .raw_transfer_en (raw_transfer_en[0]),
     .dac_raw_ch_data (dac_raw_ch_a_data),
     .trigger (trigger),
     .trigger_active (trigger_active),
@@ -263,7 +263,7 @@ module axi_dac_interpolate #(
     .start_sync_channels (start_sync_channels),
     .sync_stop_channels (stop_sync_channels),
     .flush_dma_in (flush_dma_s),
-    .raw_transfer_en (raw_transfer_en),
+    .raw_transfer_en (raw_transfer_en[1]),
     .dac_raw_ch_data (dac_raw_ch_b_data),
     .trigger (trigger),
     .trigger_active (trigger_active),

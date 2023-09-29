@@ -95,7 +95,7 @@ module axi_dac_interpolate_filter #(
 
   reg     [ 1:0]    flush_sm = 2'd0;
   reg     [ 1:0]    flush_sm_next = 2'd0;
-  reg               raw_dma_n = 2'd0;
+  reg               raw_dma_n = 1'd0;
 
   wire              dac_valid_corrected;
   wire    [15:0]    dac_data_corrected;
