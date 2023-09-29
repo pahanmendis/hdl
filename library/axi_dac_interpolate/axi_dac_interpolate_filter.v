@@ -96,6 +96,8 @@ module axi_dac_interpolate_filter #(
   reg     [ 1:0]    flush_sm = 2'd0;
   reg     [ 1:0]    flush_sm_next = 2'd0;
   reg               raw_dma_n = 1'd0;
+  reg               dma_transfer_suspend_d;
+  reg               dma_transfer_suspend_d2;
 
   wire              dac_valid_corrected;
   wire    [15:0]    dac_data_corrected;
@@ -116,7 +118,11 @@ module axi_dac_interpolate_filter #(
     raw_dma_n <= raw_transfer_en ?
                        1'b1 :
                        flush_dma | raw_dma_n & dma_transfer_suspend;
+    dma_transfer_suspend_d <= dma_transfer_suspend;
+    dma_transfer_suspend_d2 <= dma_transfer_suspend_d;
   end
+
+  assign reset_filt = !raw_dma_n & dma_transfer_suspend_d2;
 
   assign iqcor_data_in  = raw_dma_n ? dac_raw_ch_data : dac_data;
   assign iqcor_valid_in = raw_dma_n ? 1'b1 : dac_valid;
@@ -139,7 +145,7 @@ module axi_dac_interpolate_filter #(
   fir_interp fir_interpolation (
     .clk (dac_clk),
     .clk_enable (dac_cic_valid),
-    .reset (dac_rst | dma_transfer_suspend),
+    .reset (dac_rst | reset_filt),
     .filter_in (dac_data_corrected),
     .filter_out (dac_fir_data),
     .ce_out (dac_fir_valid));
@@ -147,7 +153,7 @@ module axi_dac_interpolate_filter #(
   cic_interp cic_interpolation (
     .clk (dac_clk),
     .clk_enable (dac_valid_corrected),
-    .reset (dac_rst | cic_change_rate | dma_transfer_suspend),
+    .reset (dac_rst | cic_change_rate | reset_filt),
     .rate (interp_rate_cic),
     .load_rate (1'b0),
     .filter_in (dac_fir_data[30:0]),
@@ -156,7 +162,7 @@ module axi_dac_interpolate_filter #(
 
   assign dma_valid_ch_sync = sync_stop_channels ?
                              dma_valid & dma_valid_adjacent & !dma_transfer_suspend :
-                             dma_valid & !dma_transfer_suspend;
+                             dma_valid & (!dma_transfer_suspend | flush_dma);
 
   assign dma_valid_ch = dma_valid_ch_sync & !stop_transfer;
   always @(posedge dac_clk) begin
@@ -240,7 +246,7 @@ module axi_dac_interpolate_filter #(
     flush_sm <= flush_sm_next;
   end
 
-  assign flush_dma = flush_sm == FLUSHING ? 1'b1 : 1'b0;
+  assign flush_dma = flush_sm_next == FLUSHING ? 1'b1 : 1'b0;
   assign dma_ready = transmit_ready ? dac_int_ready : flush_dma;
   assign underflow = dac_enable & dma_ready & ~dma_valid;
 
