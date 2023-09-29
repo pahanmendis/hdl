@@ -136,7 +136,8 @@ module axi_ad4858 #(
 
   // localparam
 
-  localparam             CONFIG = {~LVDS_CMOS_N[0], 7'd0};
+  localparam  [ 0:0]     READ_RAW = 1'b1;
+  localparam             CONFIG = {18'd0, READ_RAW, 5'd0, ~LVDS_CMOS_N[0], 7'd0};
   localparam  [ 7:0]     ACTIVE_LANES = {
                          LANE_7_ENABLE == 1 ? 1'b1 : 1'b0,
                          LANE_6_ENABLE == 1 ? 1'b1 : 1'b0,
