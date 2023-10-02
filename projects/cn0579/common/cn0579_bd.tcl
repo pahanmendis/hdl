@@ -1,9 +1,5 @@
-###############################################################################
-## Copyright (C) 2023 Analog Devices, Inc. All rights reserved.
-### SPDX short identifier: ADIBSD
-###############################################################################
-
 create_bd_intf_port -mode Master -vlnv xilinx.com:interface:iic_rtl:1.0 iic_dac
+
 # ad7768-4 interface
 
 create_bd_port -dir I clk_in
@@ -14,6 +10,7 @@ create_bd_port -dir I -from 7 -to 0 data_in
 
 ad_ip_instance axi_iic axi_iic_dac
 ad_connect iic_dac axi_iic_dac/iic
+
 
 # adc(cn0579-dma)
 
